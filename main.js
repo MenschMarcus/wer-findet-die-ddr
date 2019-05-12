@@ -1,7 +1,26 @@
-// Load statistics
+// ===========================================================================
+// Member variables
+// ===========================================================================
+
+let STAT_IMAGE_FOLDER = 'stats/'
+let div_stat_name = null
+let div_stat_description = null
+let div_stat_image = null
+let div_stat_source = null
+
+// ===========================================================================
+// Main function (on load of document)
+// ===========================================================================
 
 $(document).ready(function()
   {
+    // Load div variables
+    div_stat_name =         document.getElementById("stat-name")
+    div_stat_description =  document.getElementById("stat-description")
+    div_stat_image =        document.getElementById("stat-image")
+    div_stat_source =       document.getElementById("stat-source")
+
+    // Initially load data
     $.ajax(
       {
         type: "GET",
@@ -10,11 +29,11 @@ $(document).ready(function()
         success: function(data)
         {
           let data_array = CSVToArray(data, "|")
-          let statistics = []
-          
+          let stat_data = []
+
           for (line of data_array)
           {
-            statistics.push(
+            stat_data.push(
               {
                 'title':          line[0],
                 'subtitle':       line[1],
@@ -27,8 +46,8 @@ $(document).ready(function()
                 'src_access':     line[8]
               }
             )
-          } 
-          console.log(statistics)
+          }
+          showStatistic(stat_data[10])
         }
       }
     )
@@ -38,6 +57,29 @@ $(document).ready(function()
 // # LEGEND
 // Titel	Untertitel	Jahr	Dateiname	Autor	Seite	Titel	URL	Zugriffsdatum
 
+
+// ===========================================================================
+// Write new stat in the viewport
+// ===========================================================================
+
+function showStatistic(stat_data)
+{
+  console.log(stat_data);
+
+  // Set text
+  div_stat_name.innerHTML =
+    stat_data.title
+  div_stat_description.innerHTML =
+    stat_data.subtitle + ' (' + stat_data.year + ')'
+  div_stat_source.innerHTML =
+    stat_data.src_author + ' (' + stat_data.src_website + '): "' + stat_data.src_title + '", ' +
+    'URL: <a target="_blank" href="' + stat_data.src_url + '">' + stat_data.src_url + '</a>, ' +
+    'Zugriff: ' + stat_data.src_access
+
+  // Set image
+  div_stat_image.src = STAT_IMAGE_FOLDER + stat_data.graphic_source
+
+}
 
 
 
