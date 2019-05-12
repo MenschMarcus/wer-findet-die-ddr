@@ -3,10 +3,17 @@
 // ===========================================================================
 
 let STAT_IMAGE_FOLDER = 'stats/'
+
+let stat_data = []
+let curr_stat_id = 0
+let max_stat_id = 0
+
 let div_stat_name = null
 let div_stat_description = null
 let div_stat_image = null
 let div_stat_source = null
+let prev_button = null
+let next_button = null
 
 // ===========================================================================
 // Main function (on load of document)
@@ -19,6 +26,8 @@ $(document).ready(function()
     div_stat_description =  document.getElementById("stat-description")
     div_stat_image =        document.getElementById("stat-image")
     div_stat_source =       document.getElementById("stat-source")
+    prev_button =           document.getElementById("prev-button")
+    next_button =           document.getElementById("next-button")
 
     // Initially load data
     $.ajax(
@@ -29,8 +38,6 @@ $(document).ready(function()
         success: function(data)
         {
           let data_array = CSVToArray(data, "|")
-          let stat_data = []
-
           for (line of data_array)
           {
             stat_data.push(
@@ -47,25 +54,38 @@ $(document).ready(function()
               }
             )
           }
-          showStatistic(stat_data[10])
+          // Forever set how many statistics there are
+          max_stat_id = stat_data.length-1
+
+          showStat(stat_data[curr_stat_id])
         }
       }
     )
+
+    // Initialize prev/next button
+    prev_button.onclick = function()
+    {
+      curr_stat_id = curr_stat_id - 1
+      if (curr_stat_id < 0)
+        curr_stat_id = max_stat_id-1
+      showStat(stat_data[curr_stat_id])
+    }
+    next_button.onclick = function()
+    {
+      curr_stat_id = (curr_stat_id + 1) % max_stat_id
+      showStat(stat_data[curr_stat_id])
+    }
+
   }
 )
-
-// # LEGEND
-// Titel	Untertitel	Jahr	Dateiname	Autor	Seite	Titel	URL	Zugriffsdatum
 
 
 // ===========================================================================
 // Write new stat in the viewport
 // ===========================================================================
 
-function showStatistic(stat_data)
+function showStat(stat_data)
 {
-  console.log(stat_data);
-
   // Set text
   div_stat_name.innerHTML =
     stat_data.title
