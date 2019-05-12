@@ -21,13 +21,6 @@ h1
 
 /* Prepare rows and columns for responsive web design */
 
-[class*="col-"]
-{
-  float: left;
-  padding: 15px;
-  border: 1px solid red;
-}
-
 .row::after
 {
   content: "";
@@ -35,49 +28,33 @@ h1
   display: table;
 }
 
-/* Mobile first! */
-[class*="col-"]
+/* Main layout (left/right buttons and image) */
+#main-container
 {
+  display: table;
   width: 100%;
 }
 
-/* Tablet second! */
-/* @media only screen and (min-width: 600px)
+.nav-button-container
 {
-  .col-tabl-1  {width: 08.33%;}
-  .col-tabl-2  {width: 16.66%;}
-  .col-tabl-3  {width: 25.00%;}
-  .col-tabl-4  {width: 33.33%;}
-  .col-tabl-5  {width: 41.66%;}
-  .col-tabl-6  {width: 50.00%;}
-  .col-tabl-7  {width: 58.33%;}
-  .col-tabl-8  {width: 66.66%;}
-  .col-tabl-9  {width: 75.00%;}
-  .col-tabl-10 {width: 83.33%;}
-  .col-tabl-11 {width: 91.66%;}
-  .col-tabl-12 {width: 100.0%;}
-} */
-
-/* Desktop third ;-) */
-@media only screen and (min-width: 768px)
+  display: table-cell;
+  vertical-align: middle;
+  width: 10%;
+  text-align: center;
+  height: 100%;
+}
+.nav-button-container:hover
 {
-  .col-1  {width: 08.33%;}
-  .col-2  {width: 16.66%;}
-  .col-3  {width: 25.00%;}
-  .col-4  {width: 33.33%;}
-  .col-5  {width: 41.66%;}
-  .col-6  {width: 50.00%;}
-  .col-7  {width: 58.33%;}
-  .col-8  {width: 66.66%;}
-  .col-9  {width: 75.00%;}
-  .col-10 {width: 83.33%;}
-  .col-11 {width: 91.66%;}
-  .col-12 {width: 100.0%;}
+  background-color: #eee;
 }
 
+#stat-image-container
+{
+  display: table-cell;
+  width: 80%;
+  text-align: center;
+}
 
-/* Breakpoint: on large screens (> 768px → Mobile Phones)
-   left/right switch next to each other */
 
 /* TITLE (top) AND DISCLAIMER (bottom) */
 
@@ -90,22 +67,10 @@ h1
 #disclaimer
 {
   text-align: center;
-  font-size: 0.75em;
-  margin: 0;
+  font-size: 0.9em;
 }
 
 /* LEFT / RIGHT BUTTONS  */
-
-.nav-button-container
-{
-  text-align: center;
-  height: 100%;
-}
-
-.nav-button-container:hover
-{
-  background-color: #eee;
-}
 
 .nav-button
 {
@@ -137,11 +102,6 @@ h1
   font-size: 0.75em;
 }
 
-#stat-image-container
-{
-  width: 100%;
-  text-align: center;
-}
 #stat-image
 {
   max-width: 100%;
