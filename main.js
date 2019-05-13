@@ -110,7 +110,7 @@ function showStat(stat_data)
   div_stat_description.innerHTML =
     stat_data.subtitle + ' (' + stat_data.year + ')'
   div_stat_source.innerHTML =
-    stat_data.src_author + ' (' + stat_data.src_website + '): "' + stat_data.src_title + '", ' +
+    'Quelle: ' + stat_data.src_author + ' (' + stat_data.src_website + '): "' + stat_data.src_title + '", ' +
     'URL: <a target="_blank" href="' + stat_data.src_url + '">' + stat_data.src_url + '</a>, ' +
     'Zugriff: ' + stat_data.src_access
 
