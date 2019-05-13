@@ -2,12 +2,15 @@
 // Member variables
 // ===========================================================================
 
+// Constants
 let STAT_IMAGE_FOLDER = 'stats/'
 
+// Statistics
 let stat_data = []
 let curr_stat_id = 0
 let max_stat_id = 0
 
+// JS DOM elements
 let div_stat_name = null
 let div_stat_description = null
 let div_stat_image = null
@@ -84,6 +87,21 @@ $(document).ready(function()
 // Write new stat in the viewport
 // ===========================================================================
 
+function testOn()
+{
+  $('#test-area').css('background-color', 'red')
+}
+function testOff()
+{
+  $('#test-area').css('background-color', 'grey')
+}
+
+
+
+// ===========================================================================
+// Write new stat in the viewport
+// ===========================================================================
+
 function showStat(stat_data)
 {
   // Set text
@@ -98,6 +116,7 @@ function showStat(stat_data)
 
   // Set image
   div_stat_image.src = STAT_IMAGE_FOLDER + stat_data.graphic_source
+  div_stat_image.alt = stat_data.title
 
 }
 
@@ -111,7 +130,8 @@ function showStat(stat_data)
 // This will parse a delimited string into an array of
 // arrays. The default delimiter is the comma, but this
 // can be overriden in the second argument.
-function CSVToArray(strData, strDelimiter) {
+function CSVToArray(strData, strDelimiter)
+{
   // Check to see if the delimiter is defined. If not,
   // then default to comma.
   strDelimiter = (strDelimiter || ",");
@@ -153,9 +173,10 @@ function CSVToArray(strData, strDelimiter) {
     // field delimiter. If id does not, then we know
     // that this delimiter is a row delimiter.
     if (
-      strMatchedDelimiter.length &&
-      strMatchedDelimiter !== strDelimiter
-      ){
+        strMatchedDelimiter.length &&
+        strMatchedDelimiter !== strDelimiter
+      )
+      {
 
       // Since we have reached a new row of data,
       // add an empty row to our data array.
