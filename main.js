@@ -15,8 +15,10 @@ let div_stat_name = null
 let div_stat_description = null
 let div_stat_image = null
 let div_stat_source = null
-let prev_button = null
-let next_button = null
+let div_prev_button = null
+let div_next_button = null
+let div_click_gdr = null
+let div_curr_img = null
 
 // ===========================================================================
 // Main function (on load of document)
@@ -29,8 +31,9 @@ $(document).ready(function()
     div_stat_description =  document.getElementById("stat-description")
     div_stat_image =        document.getElementById("stat-image")
     div_stat_source =       document.getElementById("stat-source")
-    prev_button =           document.getElementById("prev-button")
-    next_button =           document.getElementById("next-button")
+    div_prev_button =       document.getElementById("prev-button")
+    div_next_button =       document.getElementById("next-button")
+    div_click_gdr =         document.getElementById("click-gdr")
 
     // Initially load data
     $.ajax(
@@ -60,24 +63,29 @@ $(document).ready(function()
           // Forever set how many statistics there are
           max_stat_id = stat_data.length-1
 
-          showStat(stat_data[curr_stat_id])
+          showStat()
+          setTimeout(resizeImageMap, 300)
         }
       }
     )
 
     // Initialize prev/next button
-    prev_button.onclick = function()
+    div_prev_button.onclick = function()
     {
       curr_stat_id = curr_stat_id - 1
       if (curr_stat_id < 0)
         curr_stat_id = max_stat_id-1
-      showStat(stat_data[curr_stat_id])
+      showStat()
     }
-    next_button.onclick = function()
+    div_next_button.onclick = function()
     {
       curr_stat_id = (curr_stat_id + 1) % max_stat_id
-      showStat(stat_data[curr_stat_id])
+      showStat()
     }
+
+    // Initialize imagemap
+
+
 
   }
 )
@@ -87,7 +95,11 @@ $(document).ready(function()
 // Write new stat in the viewport
 // ===========================================================================
 
-function testOn()
+function testIn()
+{
+  $('#test-area').css('background-color', 'green')
+}
+function testOut()
 {
   $('#test-area').css('background-color', 'red')
 }
@@ -102,24 +114,59 @@ function testOff()
 // Write new stat in the viewport
 // ===========================================================================
 
-function showStat(stat_data)
+function showStat()
 {
+  // Get current stat data
+  let this_stat_data = stat_data[curr_stat_id]
+
   // Set text
   div_stat_name.innerHTML =
-    stat_data.title
+    this_stat_data.title
   div_stat_description.innerHTML =
-    stat_data.subtitle + ' (' + stat_data.year + ')'
+    this_stat_data.subtitle + ' (' + this_stat_data.year + ')'
   div_stat_source.innerHTML =
-    'Quelle: ' + stat_data.src_author + ' (' + stat_data.src_website + '): "' + stat_data.src_title + '", ' +
-    'URL: <a target="_blank" href="' + stat_data.src_url + '">' + stat_data.src_url + '</a>, ' +
-    'Zugriff: ' + stat_data.src_access
+    'Quelle: ' + this_stat_data.src_author + ' (' + this_stat_data.src_website + '): "' + this_stat_data.src_title + '", ' +
+    'URL: <a target="_blank" href="' + this_stat_data.src_url + '">' + this_stat_data.src_url + '</a>, ' +
+    'Zugriff: ' + this_stat_data.src_access
 
   // Set image
-  div_stat_image.src = STAT_IMAGE_FOLDER + stat_data.graphic_source
-  div_stat_image.alt = stat_data.title
+  div_stat_image.src = STAT_IMAGE_FOLDER + this_stat_data.graphic_source
+  div_stat_image.alt = this_stat_data.title
 
+  // Set current image
+  div_curr_img = document.getElementById('stat-image')
 }
 
+
+// ############################################################################
+// # Resize Image Map for current viewport
+// ############################################################################
+
+function resizeImageMap()
+{
+  // Get current dimension of image
+  console.log(div_curr_img.clientWidth)
+  console.log(div_curr_img.clientHeight)
+
+  // To the edge of the image (px)
+  let offset = {
+    top:  0,
+    left: 0,
+  }
+
+  // Inside the image (%)
+  let dimensions = {
+    top: 0,
+    left: 0,
+    width: 100,
+    height: 100,
+  }
+  $(div_click_gdr).css('top',     offset.top + dimensions.top + "%")
+  $(div_click_gdr).css('left',    offset.left + dimensions.top + "%")
+  $(div_click_gdr).css('width',   dimensions.width + "%")
+  $(div_click_gdr).css('height',  dimensions.height + "%")
+
+}
 
 
 // ############################################################################

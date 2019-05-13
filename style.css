@@ -63,7 +63,9 @@ h1
 
 #title-row
 {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 65px;
 }
@@ -71,8 +73,6 @@ h1
 #bottom-row
 {
   position: relative;
-  bottom: -8px;
-  left: 0;
   width: 100%;
   height: 40px;
 }
@@ -157,11 +157,36 @@ h1
   height: auto;
 }
 
+/* "IMAGE MAP" */
+
+#stat-image-container
+{
+  position: relative;
+}
+
+#click-not-gdr
+{
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#click-gdr
+{
+  display: block;
+  position: absolute;
+  background: gray;
+  opacity: 0.5;
+}
+
 /* TEST #TODO DELETE */
 
 #test-area
 {
-  position: absolute;
+  position: sticky;
   left: 0;
   top: 100px;
   width: 50px;
