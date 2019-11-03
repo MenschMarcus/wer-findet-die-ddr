@@ -26,11 +26,12 @@ let LEVELS =
 
 // Statistics
 let stat_data = []
-let curr_stat_id = 0
-let max_stat_id = 0
+let stat_ids = []
+let num_stats = 0
 
 // Game mode
-let points = 0
+let curr_stat_nr = 0
+let curr_points = 0
 let max_points = 0
 
 // JS DOM elements
@@ -62,8 +63,8 @@ $(document).ready(function()
     $.ajax(
       {
         type: "GET",
-        url: "data_short.csv", // short (for develop)
-        // url: "data.csv", // full
+        // url: "data_short.csv", // short (for develop)
+        url: "data.csv", // full
         dataType: "text",
         success: function(data)
         {
@@ -85,13 +86,23 @@ $(document).ready(function()
             )
           }
           // Forever set how many statistics there are and how many points are to be reached
-          max_stat_id = stat_data.length-1
-          max_points = HIT_POINTS * max_stat_id
+          num_stats = stat_data.length-1
+          max_points = HIT_POINTS * num_stats
+
+          // Initially randomize array
+          let stat_id = 0
+          while (stat_id < num_stats)
+          {
+            stat_ids[stat_id] = stat_id
+            stat_id++
+          }
+          stat_ids = shuffle(stat_ids)
 
           // Initially fill points and progress
           setProgress()
           setPoints()
 
+          // Set initial stat
           showStat()
           setTimeout(resizeImageMap, 300)
         }
@@ -123,7 +134,7 @@ $(document).ready(function()
 function showStat()
 {
   // Get current stat data
-  let this_stat_data = stat_data[curr_stat_id]
+  let this_stat_data = stat_data[stat_ids[curr_stat_nr]]
 
   // Set text
   div.stat_name.innerHTML =
@@ -151,7 +162,7 @@ function showStat()
 function showSummary()
 {
   // Calculate level
-  let hit_rate = points/max_points
+  let hit_rate = curr_points/max_points
   let level_id = 0
   let num_levels = LEVELS.length
   let level_text = LEVELS[level_id][1]
@@ -175,7 +186,7 @@ function showSummary()
   div.stat_name.innerHTML = SUMMARY.TITLE
 
   div.stat_description.innerHTML =
-    SUMMARY.POINTS_PRE + " " + points + " von " + max_points + " " + SUMMARY.POINTS_SUFF + " <br/> " +
+    SUMMARY.POINTS_PRE + " " + curr_points + " von " + max_points + " " + SUMMARY.POINTS_SUFF + " <br/> " +
     level_text
 
   // Set reload button
@@ -201,7 +212,7 @@ function showSummary()
 
 function setProgress()
 {
-  div.progress.innerHTML = curr_stat_id + " / " + (max_stat_id)
+  div.progress.innerHTML = curr_stat_nr + " / " + (num_stats)
 }
 
 
@@ -211,7 +222,7 @@ function setProgress()
 
 function setPoints()
 {
-  div.points.innerHTML = points
+  div.points.innerHTML = curr_points
 }
 
 
@@ -224,16 +235,16 @@ function updateGame(success)
   // If success -> Increase points
   if (success)
   {
-    points += HIT_POINTS
+    curr_points += HIT_POINTS
     setPoints()
   }
 
   // Increase progress
-  curr_stat_id += 1
+  curr_stat_nr += 1
   setProgress()
 
   // Check if game is over
-  if (curr_stat_id == max_stat_id)
+  if (curr_stat_nr == num_stats)
   {
     showSummary()
   }
@@ -303,18 +314,31 @@ function resizeImageMap()
 }
 
 
-
-// Logic: GO to prev stat
-// curr_stat_id = curr_stat_id - 1
-// if (curr_stat_id < 0)
-//   curr_stat_id = max_stat_id-1
-// showStat()
-
-
-
 // ############################################################################
 // # HELPER FUNCTIONS
 // ############################################################################
+
+// ref: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 
 // ref: http://stackoverflow.com/a/1293163/2343
 // This will parse a delimited string into an array of
