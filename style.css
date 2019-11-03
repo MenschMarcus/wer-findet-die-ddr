@@ -38,19 +38,6 @@ h1
   width: 100%;
 }
 
-.nav-button-container
-{
-  display: table-cell;
-  vertical-align: middle;
-  width: 10%;
-  text-align: center;
-  height: 100%;
-}
-.nav-button-container:hover
-{
-  background-color: #eee;
-}
-
 #stat-image-container
 {
   display: table-cell;
@@ -59,22 +46,14 @@ h1
 }
 
 
-/* TITLE (top) AND DISCLAIMER (bottom) */
+/* TITLE (top) */
 
-#title-row
+#title-bar
 {
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 65px;
-}
-
-#bottom-row
-{
-  position: relative;
-  width: 100%;
-  height: 40px;
+  height: 110px;
 }
 
 .emph-row
@@ -95,10 +74,54 @@ h1
 
 #title
 {
-  margin: 5px;
   text-align: center;
-  font-size: 1.35em;
+  font-size: 1.5em;
   font-weight: bold;
+}
+
+/* Title row: three ivs next to each other:
+  progress | title | points */
+
+.infobox-top
+{
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  width: 180px;
+  height: 70px;
+  margin: 0 20px;
+  border: 1px solid black;
+  background-color: darkgrey;
+}
+
+.infobox-top p
+{
+  margin: 9px;
+  padding: 1px;
+  text-align: center;
+  font-weight: bold;
+}
+
+#progress
+{
+  /* margin-left: -90-250 */
+  margin-left: -340px;
+}
+
+#points
+{
+  /* margin-left: -90+250 */
+  margin-left: 160px;
+}
+
+
+/* AND DISCLAIMER (bottom) */
+
+#bottom-bar
+{
+  position: relative;
+  width: 100%;
+  height: 40px;
 }
 
 #disclaimer
@@ -158,24 +181,6 @@ h1
   color: white;
   font-size: 3em;
 }
-
-/* LEFT / RIGHT BUTTONS  */
-
-.nav-button-container
-{
-  cursor: pointer;
-}
-
-.nav-button
-{
-  text-decoration: none;
-  display: inline-block;
-  color: black;
-  font-size: 5em;
-  padding-bottom: 10px;
-}
-
-/* MAIN PART: STATISTIC */
 
 #stat-name
 {

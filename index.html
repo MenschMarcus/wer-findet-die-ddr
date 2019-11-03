@@ -22,9 +22,21 @@
   <body>
 
     <!-- Title Row -->
-    <div id="title-row" class="row emph-row">
+    <div id="title-bar" class="row emph-row">
       <p id="subtitle">Jetzt neu zum 30-Jahre-Mauerfall-Special! – Spiel, Spaß und Spannung für die ganze Familie!</p>
-      <p id="title">Wer findet die DDR?</p>
+      <div id="title-row">
+        <p id="title">
+          Wer findet die DDR?
+        </p>
+        <div id="progress" class="infobox-top">
+          <p>Abgeschlossen</p>
+          <p>15 / 35</p>
+        </div>
+        <div id="points" class="infobox-top">
+          <p>Punkte</p>
+          <p>100</p>
+        </div>
+      </div>
     </div>
 
     <!-- Main Row 1: (Name of the statistic) -->
@@ -35,9 +47,6 @@
 
     <!-- Main Row 2: (Left/Right-Switch and Image) -->
     <div id="main-container">
-      <div id="prev-button" class="nav-button-container noselect">
-        <a href="#" class="nav-button noselect">&#8249;</a>
-      </div>
 
       <!-- Image map: GDR -->
       <div id="stat-image-container">
@@ -49,12 +58,8 @@
         <a id="click-not-gdr" onmouseover="testOut()" onmouseout="testOff()"></a>
         <a id="click-gdr" onmouseover="testIn()"></a>
         -->
-
       </div>
 
-      <div id="next-button" class="nav-button-container noselect">
-          <a href="#" class="nav-button noselect">&#8250;</a>
-      </div>
     </div>
 
     <!-- Main Row 3: (Source of the statistic) -->
@@ -63,7 +68,7 @@
     </div>
 
     <!-- Bottom Row (disclaimer) -->
-    <div id="bottom-row" class="row emph-row">
+    <div id="bottom-bar" class="row emph-row">
       <p id='disclaimer'>Verantwortlich für den Inhalt: Marcus Kossatz &copy; 2019, Alle Rechte vorbehalten, Keine Statistik selbst gemacht, alles geklaut - aber Quelle angegeben. Sollte ich Fehler gemacht haben, bitte nicht meckern, sondern mir Bescheid sagen &rarr; <button id="legal-notice-button">Impressum</button>.</p>
     </div>
 

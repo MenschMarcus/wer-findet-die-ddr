@@ -29,8 +29,6 @@ $(document).ready(function()
       stat_description :    document.getElementById("stat-description"),
       stat_image :          document.getElementById("stat-image"),
       stat_source :         document.getElementById("stat-source"),
-      prev_button :         document.getElementById("prev-button"),
-      next_button :         document.getElementById("next-button"),
       click_gdr :           document.getElementById("click-gdr"),
       click_not_gdr :       document.getElementById("click-not-gdr"),
       legal_notice_button : document.getElementById("legal-notice-button"),
@@ -71,21 +69,15 @@ $(document).ready(function()
       }
     )
 
-    // Initialize prev/next button
-    div.prev_button.onclick = function()
-    {
-      // Decrease idx of current statistic
-      curr_stat_id = curr_stat_id - 1
-      if (curr_stat_id < 0)
-        curr_stat_id = max_stat_id-1
-      showStat()
-    }
-    div.next_button.onclick = function()
-    {
-      // Increase idx of current statistic
-      curr_stat_id = (curr_stat_id + 1) % max_stat_id
-      showStat()
-    }
+      // Logic: Go to next stat
+      // curr_stat_id = curr_stat_id - 1
+      // if (curr_stat_id < 0)
+      //   curr_stat_id = max_stat_id-1
+      // showStat()
+
+      // Logic: GO to prev stat
+      // curr_stat_id = (curr_stat_id + 1) % max_stat_id
+      // showStat()
 
     // Initialize legal notice overlay
     // Click on "Impressum" -> turn on
@@ -175,16 +167,17 @@ function resizeImageMap()
   $(div.click_gdr).css('height',  final_position.height)
 
   // Click on GDR (Hit correctly!)
-  div.click_gdr.onclick = function()
-  {
-    alert(HIT_GDR)
-  }
 
-  // Click not on GDR (Miss GDR)
-  div.click_not_gdr.onclick = function()
-  {
-    alert(MISS_GDR)
-  }
+  // div.click_gdr.onclick = function()
+  // {
+  //   alert(HIT_GDR)
+  // }
+  //
+  // // Click not on GDR (Miss GDR)
+  // div.click_not_gdr.onclick = function()
+  // {
+  //   alert(MISS_GDR)
+  // }
 }
 
 
