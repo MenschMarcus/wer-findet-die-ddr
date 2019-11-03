@@ -126,6 +126,17 @@ h1
   cursor: pointer; /* Add a pointer on hover */
 }
 
+#legal-notice-button
+{
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  font-size: 1em;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .overlay-text
 {
   position: absolute;
