@@ -228,7 +228,7 @@ h1
 {
   display: block;
   position: absolute;
-  background: gray;
+  background: gray;     /* TODO: remove to not see it ;-) */
   opacity: 0.5;
 }
 

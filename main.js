@@ -174,13 +174,13 @@ function resizeImageMap()
   $(div.click_gdr).css('width',   final_position.width)
   $(div.click_gdr).css('height',  final_position.height)
 
-  // Click on GDR
+  // Click on GDR (Hit correctly!)
   div.click_gdr.onclick = function()
   {
     alert(HIT_GDR)
   }
 
-  // Click not on GDR
+  // Click not on GDR (Miss GDR)
   div.click_not_gdr.onclick = function()
   {
     alert(MISS_GDR)
