@@ -4,6 +4,8 @@
 
 // Constants
 let STAT_IMAGE_FOLDER = 'stats/'
+let HIT_GDR = "Herzlichen Glückwunsch! Du hast vollkommen überraschend die DDR gefunden!"
+let MISS_GDR = "Schade, du hast die DDR leider verfehlt. Schau noch einmal genau hin!"
 
 // Statistics
 let stat_data = []
@@ -12,6 +14,7 @@ let max_stat_id = 0
 
 // JS DOM elements
 let div = null
+
 
 // ===========================================================================
 // Main function (on load of document)
@@ -29,6 +32,7 @@ $(document).ready(function()
       prev_button :         document.getElementById("prev-button"),
       next_button :         document.getElementById("next-button"),
       click_gdr :           document.getElementById("click-gdr"),
+      click_not_gdr :       document.getElementById("click-not-gdr"),
       legal_notice_button : document.getElementById("legal-notice-button"),
       legal_notice_overlay: document.getElementById("legal-notice-overlay"),
     }
@@ -105,25 +109,6 @@ $(document).ready(function()
 // Write new stat in the viewport
 // ===========================================================================
 
-function testIn()
-{
-  $('#test-area').css('background-color', 'green')
-}
-function testOut()
-{
-  $('#test-area').css('background-color', 'red')
-}
-function testOff()
-{
-  $('#test-area').css('background-color', 'grey')
-}
-
-
-
-// ===========================================================================
-// Write new stat in the viewport
-// ===========================================================================
-
 function showStat()
 {
   // Get current stat data
@@ -148,14 +133,18 @@ function showStat()
 }
 
 
-// ############################################################################
+// ========================================================================
 // # Resize Image Map of GDR position inside the image for current viewport
-// ############################################################################
+// ========================================================================
 
 function resizeImageMap()
 {
+  // Cleanup mouse events
+  div.click_gdr.onclick = null
+
   // Get current dimension of image (px)
-  let image_dimensions = {
+  let image_dimensions =
+  {
     left:   div.curr_img.offsetLeft,
     top:    div.curr_img.offsetTop,
     width:  div.curr_img.clientWidth,
@@ -163,22 +152,39 @@ function resizeImageMap()
   }
 
   // Inside the image (%)
-  let gdr_position = {
+  let gdr_position =
+  {
+    left:   45,
     top:    10,
-    left:   50,
-    width:  30,
-    height: 40,
+    right:  5,
+    bottom: 38,
   }
 
-  // calculation of final position (px)
+  // Calculate final position of image map
   let final_position = image_dimensions
-  // Do the math!
+  final_position.left += final_position.width * gdr_position.left/100
+  final_position.width *= (1-(gdr_position.left+gdr_position.right)/100)
+  final_position.top += final_position.height * gdr_position.top/100
+  final_position.height *= (1-(gdr_position.top+gdr_position.bottom)/100)
 
-  $(div.click_gdr).css('top',     image_dimensions.top + gdr_position.top + "%")
-  $(div.click_gdr).css('left',    image_dimensions.left + gdr_position.left + "%")
-  $(div.click_gdr).css('width',   image_dimensions.width + gdr_position.width + "%")
-  $(div.click_gdr).css('height',  image_dimensions.height + gdr_position.height + "%")
+  console.log(final_position);
 
+  $(div.click_gdr).css('top',     final_position.top)
+  $(div.click_gdr).css('left',    final_position.left)
+  $(div.click_gdr).css('width',   final_position.width)
+  $(div.click_gdr).css('height',  final_position.height)
+
+  // Click on GDR
+  div.click_gdr.onclick = function()
+  {
+    alert(HIT_GDR)
+  }
+
+  // Click not on GDR
+  div.click_not_gdr.onclick = function()
+  {
+    alert(MISS_GDR)
+  }
 }
 
 
