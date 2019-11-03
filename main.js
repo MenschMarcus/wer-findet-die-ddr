@@ -11,14 +11,7 @@ let curr_stat_id = 0
 let max_stat_id = 0
 
 // JS DOM elements
-let div_stat_name = null
-let div_stat_description = null
-let div_stat_image = null
-let div_stat_source = null
-let div_prev_button = null
-let div_next_button = null
-let div_click_gdr = null
-let div_curr_img = null
+let div = null
 
 // ===========================================================================
 // Main function (on load of document)
@@ -27,13 +20,18 @@ let div_curr_img = null
 $(document).ready(function()
   {
     // Load div variables
-    div_stat_name =         document.getElementById("stat-name")
-    div_stat_description =  document.getElementById("stat-description")
-    div_stat_image =        document.getElementById("stat-image")
-    div_stat_source =       document.getElementById("stat-source")
-    div_prev_button =       document.getElementById("prev-button")
-    div_next_button =       document.getElementById("next-button")
-    div_click_gdr =         document.getElementById("click-gdr")
+    div =
+    {
+      stat_name :           document.getElementById("stat-name"),
+      stat_description :    document.getElementById("stat-description"),
+      stat_image :          document.getElementById("stat-image"),
+      stat_source :         document.getElementById("stat-source"),
+      prev_button :         document.getElementById("prev-button"),
+      next_button :         document.getElementById("next-button"),
+      click_gdr :           document.getElementById("click-gdr"),
+      legal_notice_button : document.getElementById("legal-notice-button"),
+      legal_notice_overlay: document.getElementById("legal-notice-overlay"),
+    }
 
     // Initially load data
     $.ajax(
@@ -70,21 +68,33 @@ $(document).ready(function()
     )
 
     // Initialize prev/next button
-    div_prev_button.onclick = function()
+    div.prev_button.onclick = function()
     {
+      // Decrease idx of current statistic
       curr_stat_id = curr_stat_id - 1
       if (curr_stat_id < 0)
         curr_stat_id = max_stat_id-1
       showStat()
     }
-    div_next_button.onclick = function()
+    div.next_button.onclick = function()
     {
+      // Increase idx of current statistic
       curr_stat_id = (curr_stat_id + 1) % max_stat_id
       showStat()
     }
 
-    // Initialize imagemap
+    // Initialize legal notice overlay
+    // Click on "Impressum" -> turn on
+    div.legal_notice_button.onclick = function()
+    {
+      div.legal_notice_overlay.style.display = "block"
+    }
 
+    // Click on overlay -> turn off
+    div.legal_notice_overlay.onclick = function()
+    {
+      div.legal_notice_overlay.style.display = "none"
+    }
 
 
   }
@@ -120,51 +130,54 @@ function showStat()
   let this_stat_data = stat_data[curr_stat_id]
 
   // Set text
-  div_stat_name.innerHTML =
+  div.stat_name.innerHTML =
     this_stat_data.title
-  div_stat_description.innerHTML =
+  div.stat_description.innerHTML =
     this_stat_data.subtitle + ' (' + this_stat_data.year + ')'
-  div_stat_source.innerHTML =
+  div.stat_source.innerHTML =
     'Quelle: ' + this_stat_data.src_author + ' (' + this_stat_data.src_website + '): "' + this_stat_data.src_title + '", ' +
     'URL: <a target="_blank" href="' + this_stat_data.src_url + '">' + this_stat_data.src_url + '</a>, ' +
     'Zugriff: ' + this_stat_data.src_access
 
   // Set image
-  div_stat_image.src = STAT_IMAGE_FOLDER + this_stat_data.graphic_source
-  div_stat_image.alt = this_stat_data.title
+  div.stat_image.src = STAT_IMAGE_FOLDER + this_stat_data.graphic_source
+  div.stat_image.alt = this_stat_data.title
 
   // Set current image
-  div_curr_img = document.getElementById('stat-image')
+  div.curr_img = document.getElementById('stat-image')
 }
 
 
 // ############################################################################
-// # Resize Image Map for current viewport
+// # Resize Image Map of GDR position inside the image for current viewport
 // ############################################################################
 
 function resizeImageMap()
 {
-  // Get current dimension of image
-  console.log(div_curr_img.clientWidth)
-  console.log(div_curr_img.clientHeight)
-
-  // To the edge of the image (px)
-  let offset = {
-    top:  0,
-    left: 0,
+  // Get current dimension of image (px)
+  let image_dimensions = {
+    left:   div.curr_img.offsetLeft,
+    top:    div.curr_img.offsetTop,
+    width:  div.curr_img.clientWidth,
+    height: div.curr_img.clientHeight,
   }
 
   // Inside the image (%)
-  let dimensions = {
-    top: 0,
-    left: 0,
-    width: 100,
-    height: 100,
+  let gdr_position = {
+    top:    10,
+    left:   50,
+    width:  30,
+    height: 40,
   }
-  $(div_click_gdr).css('top',     offset.top + dimensions.top + "%")
-  $(div_click_gdr).css('left',    offset.left + dimensions.top + "%")
-  $(div_click_gdr).css('width',   dimensions.width + "%")
-  $(div_click_gdr).css('height',  dimensions.height + "%")
+
+  // calculation of final position (px)
+  let final_position = image_dimensions
+  // Do the math!
+
+  $(div.click_gdr).css('top',     image_dimensions.top + gdr_position.top + "%")
+  $(div.click_gdr).css('left',    image_dimensions.left + gdr_position.left + "%")
+  $(div.click_gdr).css('width',   image_dimensions.width + gdr_position.width + "%")
+  $(div.click_gdr).css('height',  image_dimensions.height + gdr_position.height + "%")
 
 }
 
