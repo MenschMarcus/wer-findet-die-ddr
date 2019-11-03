@@ -4,13 +4,33 @@
 
 // Constants
 let STAT_IMAGE_FOLDER = 'stats/'
+let HIT_POINTS = 100
 let HIT_GDR = "Herzlichen Glückwunsch! Du hast vollkommen überraschend die DDR gefunden!"
 let MISS_GDR = "Schade, du hast die DDR leider verfehlt. Schau noch einmal genau hin!"
+let SUMMARY =
+{
+  TITLE: "Herzlichen Glückwunsch – Du hast es geschafft!",
+  POINTS_PRE: "Du hast",
+  POINTS_SUFF: "Punkten erreicht.",
+}
+let LEVELS =
+[
+  [0.0,   "Du bist richtig mies! Honecker dreht sich im Grabe um. Nimm dir ein Geschichtsbuch und lies den Teil zwischen Hitler und Mauerfall noch einmal!"],
+  [0.2,   "Du bist echt mies! Nimm dir ein Geschichtsbuch und lies den Teil zwischen Hitler und Mauerfall noch einmal!"],
+  [0.4,   "Du bist unterdurchschnittlich. Honecker benachrichtigt die Stasi."],
+  [0.6,   "Das war ganz in Ordnung. Um Margot und Erich Honecker aber richtig stolz zu machen, solltest du aber noch ein bisschen arbeiten!"],
+  [0.8,   "Das war gar nicht mal so schlecht. Margot und Erich Honecker sind stolz auf dich!"],
+  [0.99,  "Du bist spitze! Margot Honecker verleiht dir die 'Ehrennadel des Ministeriums für Volksbildung' und Erich Honecker den Titel 'Held der Arbeit'!"],
+]
 
 // Statistics
 let stat_data = []
 let curr_stat_id = 0
 let max_stat_id = 0
+
+// Game mode
+let points = 0
+let max_points = 0
 
 // JS DOM elements
 let div = null
@@ -31,6 +51,8 @@ $(document).ready(function()
       stat_source :         document.getElementById("stat-source"),
       click_gdr :           document.getElementById("click-gdr"),
       click_not_gdr :       document.getElementById("click-not-gdr"),
+      progress:             document.getElementById("progress"),
+      points:               document.getElementById("points"),
       legal_notice_button : document.getElementById("legal-notice-button"),
       legal_notice_overlay: document.getElementById("legal-notice-overlay"),
     }
@@ -39,7 +61,8 @@ $(document).ready(function()
     $.ajax(
       {
         type: "GET",
-        url: "data.csv",
+        url: "data_short.csv", // short (for develop)
+        // url: "data.csv", // full
         dataType: "text",
         success: function(data)
         {
@@ -60,24 +83,19 @@ $(document).ready(function()
               }
             )
           }
-          // Forever set how many statistics there are
+          // Forever set how many statistics there are and how many points are to be reached
           max_stat_id = stat_data.length-1
+          max_points = HIT_POINTS * max_stat_id
+
+          // Initially fill points and progress
+          setProgress()
+          setPoints()
 
           showStat()
           setTimeout(resizeImageMap, 300)
         }
       }
     )
-
-      // Logic: Go to next stat
-      // curr_stat_id = curr_stat_id - 1
-      // if (curr_stat_id < 0)
-      //   curr_stat_id = max_stat_id-1
-      // showStat()
-
-      // Logic: GO to prev stat
-      // curr_stat_id = (curr_stat_id + 1) % max_stat_id
-      // showStat()
 
     // Initialize legal notice overlay
     // Click on "Impressum" -> turn on
@@ -126,6 +144,99 @@ function showStat()
 
 
 // ========================================================================
+// # Show summary
+// ========================================================================
+
+function showSummary()
+{
+  // Calculate level
+  let hit_rate = points/max_points
+  let level_id = 0
+  let num_levels = LEVELS.length
+  let level_text = LEVELS[level_id][1]
+  while (level_id < num_levels-1)
+  {
+    console.log(hit_rate, LEVELS[level_id][0], level_id, num_levels, level_text);
+    if (hit_rate > LEVELS[level_id][0])
+    {
+      level_id++
+      level_text = LEVELS[level_id][1]
+    }
+    else
+    {
+      break
+    }
+  }
+
+  console.log(level_id, level_text);
+
+  // Set summary title
+  div.stat_name.innerHTML = SUMMARY.TITLE
+
+  div.stat_description.innerHTML =
+    SUMMARY.POINTS_PRE + " " + points + " von " + max_points + " " + SUMMARY.POINTS_SUFF + " <br/> " +
+    level_text
+
+  // Clear stat image and source
+  div.stat_image.parentNode.innerHTML = ""
+  div.stat_source.innerHTML = ""
+
+}
+
+
+// ========================================================================
+// # Set progress in box
+// ========================================================================
+
+function setProgress()
+{
+  div.progress.innerHTML = curr_stat_id + " / " + (max_stat_id)
+}
+
+
+// ========================================================================
+// # Set points in box
+// ========================================================================
+
+function setPoints()
+{
+  div.points.innerHTML = points
+}
+
+
+// ========================================================================
+// # Set points in box
+// ========================================================================
+
+function updateGame(success)
+{
+  // If success -> Increase points
+  if (success)
+  {
+    points += HIT_POINTS
+    setPoints()
+  }
+
+  // Increase progress
+  curr_stat_id += 1
+  setProgress()
+
+  // Check if game is over
+  if (curr_stat_id == max_stat_id)
+  {
+    showSummary()
+  }
+  else
+  {
+    // Load next stat
+    showStat()
+  }
+
+}
+
+
+
+// ========================================================================
 // # Resize Image Map of GDR position inside the image for current viewport
 // ========================================================================
 
@@ -159,8 +270,6 @@ function resizeImageMap()
   final_position.top += final_position.height * gdr_position.top/100
   final_position.height *= (1-(gdr_position.top+gdr_position.bottom)/100)
 
-  console.log(final_position);
-
   $(div.click_gdr).css('top',     final_position.top)
   $(div.click_gdr).css('left',    final_position.left)
   $(div.click_gdr).css('width',   final_position.width)
@@ -168,17 +277,28 @@ function resizeImageMap()
 
   // Click on GDR (Hit correctly!)
 
-  // div.click_gdr.onclick = function()
-  // {
-  //   alert(HIT_GDR)
-  // }
-  //
-  // // Click not on GDR (Miss GDR)
-  // div.click_not_gdr.onclick = function()
-  // {
-  //   alert(MISS_GDR)
-  // }
+  div.click_gdr.onclick = function()
+  {
+    updateGame(true)
+    // alert(HIT_GDR)
+  }
+
+  // Click not on GDR (Miss GDR)
+  div.click_not_gdr.onclick = function()
+  {
+    updateGame(false)
+    // alert(MISS_GDR)
+  }
 }
+
+
+
+// Logic: GO to prev stat
+// curr_stat_id = curr_stat_id - 1
+// if (curr_stat_id < 0)
+//   curr_stat_id = max_stat_id-1
+// showStat()
+
 
 
 // ############################################################################

@@ -99,19 +99,24 @@ h1
   margin: 9px;
   padding: 1px;
   text-align: center;
-  font-weight: bold;
 }
 
-#progress
+#progress-contaienr
 {
   /* margin-left: -90-250 */
   margin-left: -340px;
 }
 
-#points
+#points-container
 {
   /* margin-left: -90+250 */
   margin-left: 160px;
+}
+
+#points, #progress
+{
+  font-weight: bold;
+  font-size: 1.2em;
 }
 
 
