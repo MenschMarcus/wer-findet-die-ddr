@@ -12,6 +12,7 @@ let SUMMARY =
   TITLE: "Herzlichen Glückwunsch – Du hast es geschafft!",
   POINTS_PRE: "Du hast",
   POINTS_SUFF: "Punkten erreicht.",
+  RELOAD: "Das hat Spaß gemacht – Ich möchte noch einmal spielen!"
 }
 let LEVELS =
 [
@@ -176,6 +177,16 @@ function showSummary()
   div.stat_description.innerHTML =
     SUMMARY.POINTS_PRE + " " + points + " von " + max_points + " " + SUMMARY.POINTS_SUFF + " <br/> " +
     level_text
+
+  // Set reload button
+  let reload_button = document.createElement("button")
+  reload_button.setAttribute("id", "reload-button")
+  reload_button.innerHTML = SUMMARY.RELOAD
+  reload_button.onclick = function ()
+  {
+    location.reload()
+  }
+  div.stat_name.parentNode.appendChild(reload_button)
 
   // Clear stat image and source
   div.stat_image.parentNode.innerHTML = ""
