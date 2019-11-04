@@ -31,6 +31,7 @@ let LEVELS =
 let stat_data = []
 let stat_ids = []
 let num_stats = 0
+let curr_stat_data = null
 
 // Game mode
 let curr_stat_nr = 0
@@ -84,7 +85,12 @@ $(document).ready(function()
                 'src_website':    line[5],
                 'src_title':      line[6],
                 'src_url':        line[7],
-                'src_access':     line[8]
+                'src_access':     line[8],
+                'gdr_left':       line[9],
+                'gdr_top':        line[10],
+                'gdr_right':      line[11],
+                'gdr_bottom':     line[12],
+                'is_checked':     line[13]
               }
             )
           }
@@ -138,24 +144,26 @@ $(document).ready(function()
 function showStat()
 {
   // Get current stat data
-  let this_stat_data = stat_data[stat_ids[curr_stat_nr]]
+  curr_stat_data = stat_data[stat_ids[curr_stat_nr]]
 
   // Set text
   div.stat_name.innerHTML =
-    this_stat_data.title
+    curr_stat_data.title
   div.stat_description.innerHTML =
-    this_stat_data.subtitle + ' (' + this_stat_data.year + ')'
+    curr_stat_data.subtitle + ' (' + curr_stat_data.year + ')'
   div.stat_source.innerHTML =
-    'Quelle: ' + this_stat_data.src_author + ' (' + this_stat_data.src_website + '): "' + this_stat_data.src_title + '", ' +
-    'URL: <a target="_blank" href="' + this_stat_data.src_url + '">' + this_stat_data.src_url + '</a>, ' +
-    'Zugriff: ' + this_stat_data.src_access
+    'Quelle: ' + curr_stat_data.src_author + ' (' + curr_stat_data.src_website + '): "' + curr_stat_data.src_title + '", ' +
+    'URL: <a target="_blank" href="' + curr_stat_data.src_url + '">' + curr_stat_data.src_url + '</a>, ' +
+    'Zugriff: ' + curr_stat_data.src_access
 
   // Set image
-  div.stat_image.src = STAT_IMAGE_FOLDER + this_stat_data.graphic_source
-  div.stat_image.alt = this_stat_data.title
+  div.stat_image.src = STAT_IMAGE_FOLDER + curr_stat_data.graphic_source
+  div.stat_image.alt = curr_stat_data.title
 
   // Set current image
   div.curr_img = document.getElementById('stat-image')
+
+  resizeImageMap()
 }
 
 
@@ -183,8 +191,6 @@ function showSummary()
       break
     }
   }
-
-  console.log(level_id, level_text);
 
   // Set summary title
   div.stat_name.innerHTML = SUMMARY.TITLE
@@ -280,21 +286,12 @@ function resizeImageMap()
     height: div.curr_img.clientHeight,
   }
 
-  // Inside the image (%)
-  let gdr_position =
-  {
-    left:   45,
-    top:    10,
-    right:  5,
-    bottom: 38,
-  }
-
   // Calculate final position of image map
   let final_position = image_dimensions
-  final_position.left += final_position.width * gdr_position.left/100
-  final_position.width *= (1-(gdr_position.left+gdr_position.right)/100)
-  final_position.top += final_position.height * gdr_position.top/100
-  final_position.height *= (1-(gdr_position.top+gdr_position.bottom)/100)
+  final_position.left += final_position.width * parseInt(curr_stat_data.gdr_left)/100
+  final_position.width *= (1-(parseInt(curr_stat_data.gdr_left)+parseInt(curr_stat_data.gdr_right))/100)
+  final_position.top += final_position.height * parseInt(curr_stat_data.gdr_top)/100
+  final_position.height *= (1-(parseInt(curr_stat_data.gdr_top)+parseInt(curr_stat_data.gdr_bottom))/100)
 
   $(div.click_gdr).css('top',     final_position.top)
   $(div.click_gdr).css('left',    final_position.left)
