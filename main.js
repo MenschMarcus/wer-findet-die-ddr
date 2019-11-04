@@ -5,6 +5,7 @@
 // Constants
 let HIT_POINTS = 100
 let RANDOMIZED = false
+let OVERLAY_TEST_MODE = false
 let STAT_IMAGE_FOLDER = 'stats/'
 
 // Text strings
@@ -115,6 +116,11 @@ $(document).ready(function()
           // Set initial stat
           showStat()
           setTimeout(resizeImageMap, 300)
+
+          // Test-mode
+          if (OVERLAY_TEST_MODE)
+            document.getElementById('click-gdr').style.background = 'gray'
+
         }
       }
     )
