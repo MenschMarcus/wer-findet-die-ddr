@@ -45,6 +45,14 @@ h1
   text-align: center;
 }
 
+.emph-row
+{
+  margin: 0;
+  padding: 0;
+  background-color: #DDDDDD;
+  border-top: 1px solid #999999;
+  border-bottom: 1px solid #999999;
+}
 
 /* TITLE (top) */
 
@@ -56,13 +64,21 @@ h1
   height: 110px;
 }
 
-.emph-row
+.gdr-flag
 {
-  margin: 0;
-  padding: 0;
-  background-color: #DDDDDD;
-  border-top: 1px solid #999999;
-  border-bottom: 1px solid #999999;
+  position: absolute;
+  top: 5px;
+  left: 50%;
+}
+#gdr-flag-left
+{
+  /* margin-left: -75-450 */
+  margin-left: -525px
+}
+#gdr-flag-right
+{
+  /* margin-left: -75+450 */
+  margin-left: +375px
 }
 
 #subtitle
@@ -91,7 +107,7 @@ h1
   height: 70px;
   margin: 0 20px;
   border: 1px solid black;
-  background-color: darkgrey;
+  background-color: rgba(255,0,0,0.5);
 }
 
 .infobox-top p
@@ -251,18 +267,24 @@ h1
   opacity: 0.5;
 }
 
-/* TEST #TODO DELETE */
-
-#test-area
+/* Effects: Honecker and Facepalm */
+.animation-image
 {
-  position: sticky;
-  left: 0;
-  top: 100px;
-  width: 50px;
-  height: 50px;
-  background-color: grey;
+  position: absolute;
+  top: 50%;
+  display: none;
+  opacity: 0.0;
 }
 
+#honecker
+{
+  left: 55%;
+}
+
+#facepalm
+{
+  left: 35%;
+}
 
 /* HELPER */
 

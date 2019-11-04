@@ -3,18 +3,22 @@
 // ===========================================================================
 
 // Constants
+let STAT_IMAGE_FOLDER = 'stats/'
+
 let HIT_POINTS = 100
+let ANIMATION_IN = 650
+let ANIMATION_STAY = 600
+let ANIMATION_OUT = 500
+
 let RANDOMIZED = false
 let OVERLAY_TEST_MODE = false
-let STAT_IMAGE_FOLDER = 'stats/'
 
 // Text strings
 let HIT_GDR = "Herzlichen Glückwunsch! Du hast vollkommen überraschend die DDR gefunden!"
 let MISS_GDR = "Schade, du hast die DDR leider verfehlt. Schau noch einmal genau hin!"
 let SUMMARY =
 {
-  TITLE: "Herzlichen Glückwunsch – Du hast es geschafft!",
-  POINTS_PRE: "Du hast",
+  POINTS_PRE: "Herzlichen Glückwunsch – Du hast",
   POINTS_SUFF: "Punkten erreicht.",
   RELOAD: "Das hat Spaß gemacht – Ich möchte noch einmal spielen!"
 }
@@ -38,6 +42,9 @@ let curr_stat_data = null
 let curr_stat_nr = 0
 let curr_points = 0
 let max_points = 0
+let animation_graphic_active = false
+let honecker = null
+let facepalm = null
 
 // JS DOM elements
 let div = null
@@ -52,17 +59,21 @@ $(document).ready(function()
     // Load div variables
     div =
     {
-      stat_name :           document.getElementById("stat-name"),
-      stat_description :    document.getElementById("stat-description"),
-      stat_image :          document.getElementById("stat-image"),
-      stat_source :         document.getElementById("stat-source"),
-      click_gdr :           document.getElementById("click-gdr"),
-      click_not_gdr :       document.getElementById("click-not-gdr"),
-      progress:             document.getElementById("progress"),
-      points:               document.getElementById("points"),
-      legal_notice_button : document.getElementById("legal-notice-button"),
-      legal_notice_overlay: document.getElementById("legal-notice-overlay"),
+      stat_name :           document.getElementById('stat-name'),
+      stat_description :    document.getElementById('stat-description'),
+      stat_image :          document.getElementById('stat-image'),
+      stat_source :         document.getElementById('stat-source'),
+      click_gdr :           document.getElementById('click-gdr'),
+      click_not_gdr :       document.getElementById('click-not-gdr'),
+      progress:             document.getElementById('progress'),
+      points:               document.getElementById('points'),
+      legal_notice_button : document.getElementById('legal-notice-button'),
+      legal_notice_overlay: document.getElementById('legal-notice-overlay'),
     }
+
+    // Load Honecker and Facepalm
+    honecker = $('#honecker')
+    facepalm = $('#facepalm')
 
     // Initially load data
     $.ajax(
@@ -198,11 +209,10 @@ function showSummary()
   }
 
   // Set summary title
-  div.stat_name.innerHTML = SUMMARY.TITLE
-
-  div.stat_description.innerHTML =
+  div.stat_name.innerHTML =
     SUMMARY.POINTS_PRE + " " + curr_points + " von " + max_points + " " + SUMMARY.POINTS_SUFF + " <br/> " +
     level_text
+
 
   // Set reload button
   let reload_button = document.createElement("button")
@@ -215,6 +225,7 @@ function showSummary()
   div.stat_name.parentNode.appendChild(reload_button)
 
   // Clear stat image and source
+  div.stat_description.innerHTML = ""
   div.stat_image.parentNode.innerHTML = ""
   div.stat_source.innerHTML = ""
 
@@ -252,6 +263,75 @@ function updateGame(success)
   {
     curr_points += HIT_POINTS
     setPoints()
+    // Let honecker emerge
+    if (!animation_graphic_active)
+    {
+      animation_graphic_active = true
+      honecker.show()
+      honecker.animate(
+        {
+          opacity: '0.8',
+          top: '100px'
+        },
+        {
+          duration: ANIMATION_IN,
+          complete: function()
+          {
+            honecker.delay(ANIMATION_STAY).animate(
+              {
+                opacity: '0.0',
+              },
+              {
+                duration: ANIMATION_OUT,
+                complete: function()
+                {
+                  honecker.css('top','50%')
+                  honecker.hide()
+                  animation_graphic_active = false
+                }
+              }
+            )
+          }
+        }
+      )
+    }
+  }
+
+  // Else: Let Facepalm emerge
+  else
+  {
+    // Let facepalm emerge
+    if (!animation_graphic_active)
+    {
+      animation_graphic_active = true
+      facepalm.show()
+      facepalm.animate(
+        {
+          opacity: '0.8',
+          top: '100px'
+        },
+        {
+          duration: ANIMATION_IN,
+          complete: function()
+          {
+            facepalm.delay(ANIMATION_STAY).animate(
+              {
+                opacity: '0.0',
+              },
+              {
+                duration: ANIMATION_OUT,
+                complete: function()
+                {
+                  facepalm.css('top','50%')
+                  facepalm.hide()
+                  animation_graphic_active = false
+                }
+              }
+            )
+          }
+        }
+      )
+    }
   }
 
   // Increase progress
@@ -271,6 +351,20 @@ function updateGame(success)
 
 }
 
+
+
+
+// ========================================================================
+// # Restore animation graphics honecker and facepalm
+// ========================================================================
+
+function restoreAniGraphics()
+{
+  honecker.css('top','50%')
+  honecker.hide()
+  facepalm.css('top','50%')
+  facepalm.hide()
+}
 
 
 // ========================================================================
