@@ -61,7 +61,7 @@ h1
   top: 0;
   left: 0;
   width: 100%;
-  height: 130px;
+  height: 135px;
 }
 
 #subtitle
@@ -93,7 +93,7 @@ h1
 .infobox-top
 {
   position: absolute;
-  top: 55px;
+  top: 58px;
   left: 50%;
   width: 110px;
   height: 70px;
