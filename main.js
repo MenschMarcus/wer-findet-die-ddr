@@ -68,8 +68,7 @@ $(document).ready(function()
     $.ajax(
       {
         type: "GET",
-        // url: "data_short.csv", // short (for develop)
-        url: "data.csv", // full
+        url: "data.csv",
         dataType: "text",
         success: function(data)
         {
