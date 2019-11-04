@@ -64,23 +64,6 @@ h1
   height: 110px;
 }
 
-.gdr-flag
-{
-  position: absolute;
-  top: 5px;
-  left: 50%;
-}
-#gdr-flag-left
-{
-  /* margin-left: -75-450 */
-  margin-left: -525px
-}
-#gdr-flag-right
-{
-  /* margin-left: -75+450 */
-  margin-left: +375px
-}
-
 #subtitle
 {
   margin: 5px;
@@ -117,16 +100,16 @@ h1
   text-align: center;
 }
 
-#progress-contaienr
+#progress-container
 {
-  /* margin-left: -90-250 */
-  margin-left: -340px;
+  /* margin-left: -90-200 */
+  margin-left: -290px;
 }
 
 #points-container
 {
-  /* margin-left: -90+250 */
-  margin-left: 160px;
+  /* margin-left: -90+200 */
+  margin-left: 110px;
 }
 
 #points, #progress
