@@ -3,8 +3,11 @@
 // ===========================================================================
 
 // Constants
-let STAT_IMAGE_FOLDER = 'stats/'
 let HIT_POINTS = 100
+let RANDOMIZED = false
+let STAT_IMAGE_FOLDER = 'stats/'
+
+// Text strings
 let HIT_GDR = "Herzlichen Glückwunsch! Du hast vollkommen überraschend die DDR gefunden!"
 let MISS_GDR = "Schade, du hast die DDR leider verfehlt. Schau noch einmal genau hin!"
 let SUMMARY =
@@ -96,7 +99,8 @@ $(document).ready(function()
             stat_ids[stat_id] = stat_id
             stat_id++
           }
-          stat_ids = shuffle(stat_ids)
+          if (RANDOMIZED)
+            stat_ids = shuffle(stat_ids)
 
           // Initially fill points and progress
           setProgress()
