@@ -73,9 +73,12 @@ h1
 
 #title
 {
+  margin-top: 15px;
   text-align: center;
   font-size: 1.5em;
   font-weight: bold;
+  font-style: italic;
+  color: rgba(255,0,0,0.75);
 }
 
 /* Title row: three ivs next to each other:
@@ -86,7 +89,7 @@ h1
   position: absolute;
   top: 35px;
   left: 50%;
-  width: 180px;
+  width: 140px;
   height: 70px;
   margin: 0 20px;
   border: 1px solid black;
@@ -102,14 +105,14 @@ h1
 
 #progress-container
 {
-  /* margin-left: -90-200 */
-  margin-left: -290px;
+  /* margin-left: -70-200 */
+  margin-left: -270px;
 }
 
 #points-container
 {
-  /* margin-left: -90+200 */
-  margin-left: 110px;
+  /* margin-left: -70+200 */
+  margin-left: 130px;
 }
 
 #points, #progress
